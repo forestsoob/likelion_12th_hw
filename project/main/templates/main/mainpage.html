@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <div>
+    <img src="{% static 'images/family.jpg' %}" alt="family" width="150px">
+    <h1 class="contents">아기사자 {{ generation }}기 수빈이의 MTV</h1>
+    <div class="contents">어렵지만 재밌는 코딩세상,,🦁</div>
+    <div>💻Django MTV란?</div>
+      <ul>
+        <li>Model: {{ info.M }}</li>
+        <li>Template: {{ info.T }}</li>
+        <li>View: {{ info.V }}</li>
+      </ul>
+
+    
+{% endblock %}

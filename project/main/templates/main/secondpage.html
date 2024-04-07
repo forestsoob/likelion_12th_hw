@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <div>
+    <div class="contents">친바 3조 두두둥장!</div>
+    <div class="contents">(Feat: 친바 1등의 주인공)</div>
+  </div>
+  <div>👨‍👩‍👧‍👦멋쟁이 친바3조</div>
+      <ul>
+        <li>{{ family.1 }}</li>
+        <li>{{ family.2 }}</li>
+        <li>{{ family.3 }}</li>
+        <li>{{ family.4 }}</li>
+        <li>{{ family.5 }}</li>
+        <li>{{ family.6 }}</li>
+      </ul>
+    <div>🙇🏻‍♀든든한 멋쟁이 멘토's</div>
+      <ul>
+        {% for member in members %}
+        <li>{{ member }}</li>
+        {% endfor %}
+</ul>
+
+  {% endblock %}
