@@ -9,6 +9,7 @@
     {% if post.image %}
         <p><img src="{{ post.image.url }}" alt="사진" width="100px"></p>
     {% endif %}
+    <p>날씨: <input type="text" name="weather" value="{{post.weather}}"></p>
     <p>사진 : <input type="file" name="image"></p>
     <p>내용 : <textarea type="text" name="body" id="" cols="30" rows="10">{{post.body}}</textarea></p> 
     <button type="submit">제출</button> 

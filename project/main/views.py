@@ -42,10 +42,12 @@ def update(request, id):
     update_post.writer = request.POST['writer']
     update_post.body = request.POST['body']
     update_post.pub_date = timezone.now()
-    update_post.weather = request.POST['weather']
+
+    if 'weather' in request.POST:
+        update_post.weather = request.POST['weather']
 
     if request.FILES.get('image'):
-        update_post.image = request.FILES
+        update_post.image = request.FILES['image']
 
     update_post.save()
 
@@ -53,5 +55,6 @@ def update(request, id):
 
 def delete(request, id):
     delete_post = Post.objects.get(pk=id)
+
     delete_post.delete()
     return redirect('main:secondpage')
