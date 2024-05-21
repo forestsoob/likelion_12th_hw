@@ -36,7 +36,7 @@
         <p>내용 : {{comment.content}}</p>
         <p>{{comment.pub_date}}</p>
         {% if comment.writer == user %}
-        <form action="{% url 'comment-delete' comment.id %}" method="POST" style="display:inline;">
+        <form action="{% url 'main:comment-delete' comment.id %}" method="POST" style="display:inline;">
             {% csrf_token %}
             <input type="submit" value="삭제">
         </form>
