@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-
+from django.contrib.auth.decorators import login_required
 from .models import Post, Comment, Tag
 
 # Create your views here.
@@ -17,20 +17,28 @@ def new_post(request):
     return render(request, 'main/new-post.html')
 def detail(request, id):
     post = get_object_or_404(Post, pk = id)
+
     if request.method == 'GET':
         comments = Comment.objects.filter(post=post)
-        return render(request, 'main/detail.html', {'post':post, 'comments': comments})
+        return render(request, 'main/detail.html', {'post': post, 'comments': comments})
     
-    elif request.method == 'POST':
-        new_comment = Comment()
-
-        new_comment.post = post
-        new_comment.writer = request.user
-        new_comment.content = request.POST['content']
-        new_comment.pub_date = timezone.now()
-
-        new_comment.save()
-        return redirect('main:detail', id)
+    if request.method == 'POST':
+        if 'delete_comment_id' in request.POST:
+            comment_id = request.POST['delete_comment_id']
+            comment_to_delete = get_object_or_404(Comment, pk=comment_id)
+            if request.user == comment_to_delete.writer:
+                comment_to_delete.delete()
+            return redirect('main:detail', id=id)
+        
+        elif 'content' in request.POST:
+            new_comment = Comment(
+                post=post,
+                writer=request.user,
+                content=request.POST['content'],
+                pub_date=timezone.now()
+            )
+            new_comment.save()
+            return redirect('main:detail', id=id)
     
 def edit(request, id):
     edit_post = Post.objects.get(pk=id)
@@ -90,6 +98,13 @@ def delete(request, id):
 
     delete_post.delete()
     return redirect('main:secondpage')
+
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    post_id = comment.post.id
+    if request.user == comment.writer:
+        comment.delete()
+    return redirect('main:detail', id=post_id)
 
 
 def tag_list(request):
