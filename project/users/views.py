@@ -1,9 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404, redirect
+from django.contrib.auth.models import User
 from main.models import Post
 
 # Create your views here.
 
-def mypage(request):
 # 현재 로그인한 사용자의 post만 필터링하여 가져옴
-    posts = Post.objects.filter(writer=request.user)
-    return render(request, 'users/mypage.html', {'posts': posts})
+def mypage(request, id):
+    user = get_object_or_404(User, pk=id)
+    followings = user.profile.followings.all()
+    followers = user.profile.followers.all()
+
+    context = {
+        'user':user,
+        'followings':followings,
+        'followers':followers,
+
+}
+    return render(request, 'users/mypage.html', context)
+
+def follow(request, id):
+    user = request.user
+    followed_user = get_object_or_404(User, pk=id)
+    is_follower = user.profile in followed_user.profile.followers.all()
+    if is_follower:
+        user.profile.followings.remove(followed_user.profile)
+    else:
+        user.profile.followings.add(followed_user.profile)
+    return redirect('users:mypage', id=followed_user.id)

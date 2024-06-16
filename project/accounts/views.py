@@ -34,11 +34,11 @@ def signup(request):
                     password=request.POST['password']
                 )
             
-                department = request.POST['department']
-                hobby = request.POST['hobby']
+                # department = request.POST['department']
+                # hobby = request.POST['hobby']
                 
-                profile = Profile(user=user, department=department, hobby=hobby)
-                profile.save()
+                # profile = Profile(user=user, department=department, hobby=hobby)
+                # profile.save()
 
                 auth.login(request, user)
                 return redirect('/')
