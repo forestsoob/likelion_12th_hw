@@ -7,11 +7,13 @@ from main.models import Post
 # 현재 로그인한 사용자의 post만 필터링하여 가져옴
 def mypage(request, id):
     user = get_object_or_404(User, pk=id)
+    current_user = request.user
     followings = user.profile.followings.all()
     followers = user.profile.followers.all()
 
     context = {
         'user':user,
+        'current_user': current_user,
         'followings':followings,
         'followers':followers,
 
